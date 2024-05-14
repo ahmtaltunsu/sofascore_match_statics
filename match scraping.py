@@ -23,7 +23,7 @@ driver.maximize_window()
 players_data = []
 
 # Sayfayı yükle
-driver.get("İstenilen_Link") #Hedeflenen maçın sofascore linki, sayfanın dili ingilizce olmalı
+driver.get("Link") #Hedeflenen takımın sofascore linki
 driver.execute_script("document.body.style.zoom='33%'")
 
 # WebDriverWait nesnesini başlat
@@ -40,7 +40,7 @@ except ElementClickInterceptedException:
     driver.execute_script("arguments[0].click();", Player_Statics_Button)
 
 
-wait.until(EC.visibility_of_element_located((By.XPATH, "//span[@class='Text eSPCzT']")))
+wait
 
 rows = driver.find_elements(By.XPATH, "//tbody[@class='TableBody juEMAj']/tr")
 
@@ -93,11 +93,12 @@ for row in rows:
     minutes_played = minutes_played.replace("'", "")
 
     position = row.find_element(By.XPATH, ".//td[11]").text
-    rating = row.find_element(By.XPATH, ".//td[12]").text
+    rating_x = row.find_element(By.XPATH, ".//td[12]/div[2]/div/div/span")
+    rating = rating_x.get_attribute("aria-valuenow")
     # Çekilen verileri listeye ekle
     data.append([name, goals, assists, tackles, acc_pass,total_passes,acc_pass_percent,total_duels_try,total_duels_won,ground_duels_try,ground_duels_won,aerial_duels_try,aerial_duels_won,minutes_played,position,rating])
 
-df = pd.DataFrame(data, columns=['Name', 'Goals', 'Assists', 'Tackles', 'Accurate Passes', 'Total Passes', 'Accurate Passes (/100)','Total Duels Try', 'Total Duels Won','Ground Duels Try', 'Ground Duels Won','Aerial Duels Try', 'Aerial Duels Won','Minutes Played','Position','rating'])
+df = pd.DataFrame(data, columns=['Name', 'Goals', 'Assists', 'Tackles', 'Accurate Passes', 'Total Passes', 'Accurate Passes (/100)','Total Duels Try', 'Total Duels Won','Ground Duels Try', 'Ground Duels Won','Aerial Duels Try', 'Aerial Duels Won','Minutes Played','Position','Rating'])
 
 Attack_Button = driver.find_element (By.XPATH,"//span[@class='Text eSPCzT' and contains(text(), 'Attack')]")
 try:
@@ -147,13 +148,12 @@ for row in rows3:
     clearances = row.find_element(By.XPATH, ".//td[4]").text 
     blocked_shots = row.find_element(By.XPATH, ".//td[5]").text 
     interceptions = row.find_element(By.XPATH, ".//td[6]").text 
-    tackles = row.find_element(By.XPATH, ".//td[7]").text 
     dribbled_past = row.find_element(By.XPATH, ".//td[8]").text 
     defence_notes = row.find_element(By.XPATH, ".//td[9]").text
-    data_defence.append([name,shots_on_target, expected_goals, shots_off_target, shots_blocked, total_dribble_attempt,succ_dribble,attack_notes])
+    data_defence.append([name,defencive_actions,clearances,blocked_shots,interceptions,dribbled_past,defence_notes])
     
 
-df3 = pd.DataFrame(data_defence, columns=['Name','Defencive Actions','Clearances','Blocked Shots','Interceptions','Tackles','Dribbled Past','Defence Notes'])
+df3 = pd.DataFrame(data_defence, columns=['Name','Defencive Actions','Clearances','Blocked Shots','Interceptions','Dribbled Past','Defence Notes'])
 
 
 
@@ -188,7 +188,7 @@ for row in rows4:
     data_passing.append([name,touches,key_passes,total_crosses,suc_crosses,total_long_balls,succ_long_balls,passing_notes])
     
 
-df4 = pd.DataFrame(data_defence, columns=['Name','Touches','Key Passes','Total Crosses','Succ Crosses','Total Long Balls','Succ Long Balls','Passing Notes'])
+df4 = pd.DataFrame(data_passing, columns=['Name','Touches','Key Passes','Total Crosses','Succ Crosses','Total Long Balls','Succ Long Balls','Passing Notes'])
 
 
 
@@ -258,7 +258,7 @@ dfs = [df, df2, df3, df4, df5, df6]
 # Tüm DataFrame'leri 'Name' sütunu üzerinden birleştir
 merged_df = reduce(lambda left, right: pd.merge(left, right, on='Name', how='outer'), dfs)
 
-csv_file_path = 'İstenilen/Dizin/dosyaadi.csv' #Kaydetmek istenilen dizin, dosya adı ve uzantısı
+csv_file_path = 'İstenilen/dizin/dosya.csv' #Kaydetmek istenilen dizin, dosya adı ve uzantısı
 merged_df.to_csv(csv_file_path, index=False, encoding='utf-8')
 print("CSV dosyası başarıyla kaydedildi:", csv_file_path)
 # CSV dosyasına kaydet
