@@ -248,7 +248,7 @@ for row in rows6:
     runs_out_succ = runs_out_succ.strip(')')  # Sağdaki parantezi kaldırma
     high_claims = row.find_element(By.XPATH, ".//td[7]").text
     goalkeeper_notes = row.find_element(By.XPATH, ".//td[8]").text
-    data_duels.append([name,saves,goals_prevented,punches,runs_out_total,runs_out_succ,high_claims,goalkeeper_notes])
+    data_goalkeepers.append([name,saves,goals_prevented,punches,runs_out_total,runs_out_succ,high_claims,goalkeeper_notes])
     
 
 df6 = pd.DataFrame(data_goalkeepers, columns=['Name','Saves','Goals Prevented','Punches','Runs Out Total','Runs Out Succ','High Claims','GoalKeeper Notes'])
