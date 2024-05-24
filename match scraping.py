@@ -53,12 +53,17 @@ for row in rows:
     tackles = row.find_element(By.XPATH, ".//td[5]").text 
     passes = row.find_element(By.XPATH, ".//td[6]").text  
     
-    acc_pass, remaining_passes = passes.split('/')
-    total_passes, percentage = remaining_passes.split(' ')
-    acc_pass_percent = percentage.strip('()%')
-    acc_pass = int(acc_pass) 
-    total_passes = int(total_passes)
-    acc_pass_percent = int(acc_pass_percent)
+    if '%' not in passes:
+        acc_pass = 0
+        total_passes = 0
+        acc_pass_percent = 0
+    else:
+        acc_pass, remaining_passes = passes.split('/')
+        total_passes, percentage = remaining_passes.split(' ')
+        acc_pass_percent = percentage.strip('()%')
+        acc_pass = int(acc_pass) 
+        total_passes = int(total_passes)
+        acc_pass_percent = int(acc_pass_percent)
 
     total_duels_won = row.find_element(By.XPATH, ".//td[7]").text  
     total_duels_try, total_duels_won = total_duels_won.split('(')
