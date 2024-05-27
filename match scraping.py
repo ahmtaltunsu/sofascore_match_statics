@@ -24,7 +24,7 @@ players_data = []
 
 # Sayfayı yükle
 driver.get("Link") #Hedeflenen takımın sofascore linki
-driver.execute_script("document.body.style.zoom='33%'")
+driver.execute_script("document.body.style.zoom='50%'")
 
 # WebDriverWait nesnesini başlat
 wait = WebDriverWait(driver, 10)
