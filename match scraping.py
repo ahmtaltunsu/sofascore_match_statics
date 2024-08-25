@@ -22,7 +22,7 @@ driver = webdriver.Chrome(options=options)
 driver.maximize_window()
 players_data = []
 
-# Sayfayı yükle
+# Sayfayı yükleme
 driver.get("Link") #Hedeflenen takımın sofascore linki
 driver.execute_script("document.body.style.zoom='50%'")
 
